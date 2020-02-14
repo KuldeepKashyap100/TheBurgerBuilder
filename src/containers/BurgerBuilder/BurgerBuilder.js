@@ -75,6 +75,7 @@ class BurgerBuilder extends React.Component {
       .post("/orders.json", postData)
       .then(response => {
         this.setState({ loading: false, purchasing: false });
+        this.props.history.push('/checkout');
       })
       .catch(error => console.log(error));
   };

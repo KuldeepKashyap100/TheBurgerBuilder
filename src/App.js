@@ -13,19 +13,17 @@ class App extends React.Component {
   // }
   render() {
     return (
-      <BrowserRouter>
-        <div className="App">
-          <Layout>
-            {/* {this.state.flag?<BurgerBuilder />:null} */}
-            <Switch>
-              <Route path="/burgerBuilder" component={BurgerBuilder} />
-              <Route path="/checkOut" component={Checkout} />
-              <Redirect path="/" to="/burgerBuilder" />
-              <Route render={()=><h1>404 Not found</h1>}/>
-            </Switch>
-          </Layout>
-        </div>
-      </BrowserRouter>
+      <div className="App">
+        <Layout>
+          {/* {this.state.flag?<BurgerBuilder />:null} */}
+          {/* <Switch> */}
+            <Route path="/checkOut" component={Checkout} />
+            <Route path="/" exact component={BurgerBuilder} />
+            {/* <Redirect path="/" to="/burgerBuilder" /> */}
+            {/* <Route render={() => <h1>404 Not found</h1>} /> */}
+          {/* </Switch> */}
+        </Layout>
+      </div>
     );
   }
 }

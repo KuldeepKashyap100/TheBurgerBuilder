@@ -4,7 +4,6 @@ import classes from './CheckoutSummary.module.css';
 import Button from "../../UI/Button/Button";
 class CheckoutSummary extends React.Component {
   render() {
-    debugger;
     return (
       <div className={classes.CheckoutSummary}>
         <h1>We hope it tastes well!</h1>

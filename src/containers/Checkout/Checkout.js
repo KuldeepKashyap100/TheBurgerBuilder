@@ -6,7 +6,8 @@ import { Route } from "react-router-dom";
 import ContactData from "./ContactData/ContactData";
 class Checkout extends React.Component {
   state = {
-    ingredients: {}
+    ingredients: {},
+    totalPrice:null
   };
 
   cancelCheckout = () => {
@@ -20,7 +21,10 @@ class Checkout extends React.Component {
     const query = new URLSearchParams(this.props.location.search);
     const fetchedIngredients = {};
     for (let param of query.entries()) {
-      fetchedIngredients[param[0]] = +param[1];
+      if(param[0]=='price')
+        this.setState({totalPrice:param[1]});
+      else
+        fetchedIngredients[param[0]] = +param[1];
     }
     this.setState({ ingredients: fetchedIngredients });
   }

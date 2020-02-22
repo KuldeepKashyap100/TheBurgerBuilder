@@ -15,7 +15,8 @@ class Checkout extends React.Component {
   };
   continueCheckout = () => {
     // this.props.history.push(this.props.match.url + "/contact-data");
-    this.props.history.push("/checkout/contact-data");
+    // this.props.history.push("/checkout/contact-data");
+    this.props.history.replace('/checkout/contact-data');
   };
   componentDidMount() {
     const query = new URLSearchParams(this.props.location.search);

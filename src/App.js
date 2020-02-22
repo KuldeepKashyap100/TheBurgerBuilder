@@ -4,6 +4,7 @@ import Layout from "./components/Layout/Layout";
 import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
 import Checkout from "./containers/Checkout/Checkout";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import Orders from "./containers/Orders/Orders";
 class App extends React.Component {
   // state={
   //   flag:true
@@ -18,6 +19,7 @@ class App extends React.Component {
           {/* {this.state.flag?<BurgerBuilder />:null} */}
           {/* <Switch> */}
             <Route path="/checkOut" component={Checkout} />
+            <Route path="/orders" component={Orders}/>
             <Route path="/" exact component={BurgerBuilder} />
             {/* <Redirect path="/" to="/burgerBuilder" /> */}
             {/* <Route render={() => <h1>404 Not found</h1>} /> */}

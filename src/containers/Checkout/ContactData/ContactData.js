@@ -4,6 +4,7 @@ import Button from "../../../components/UI/Button/Button";
 import axiosInstance from "../../../axios-orders";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/Input/Input";
+import { connect } from "react-redux";
 
 class ContactData extends React.Component {
   state = {
@@ -15,11 +16,11 @@ class ContactData extends React.Component {
           placeholder: "Your Name"
         },
         value: "",
-        valid:false,
+        valid: false,
         validation: {
           required: true
         },
-        touched:false
+        touched: false
       },
       email: {
         elementType: "input",
@@ -28,11 +29,11 @@ class ContactData extends React.Component {
           placeholder: "Your Email"
         },
         value: "",
-        valid:false,
+        valid: false,
         validation: {
           required: true
         },
-        touched:false
+        touched: false
       },
       street: {
         elementType: "input",
@@ -41,11 +42,11 @@ class ContactData extends React.Component {
           placeholder: "Street"
         },
         value: "",
-        valid:false,
+        valid: false,
         validation: {
           required: true
         },
-        touched:false
+        touched: false
       },
       country: {
         elementType: "input",
@@ -54,11 +55,11 @@ class ContactData extends React.Component {
           placeholder: "Country"
         },
         value: "",
-        valid:false,
+        valid: false,
         validation: {
           required: true
         },
-        touched:false
+        touched: false
       },
       zipCode: {
         elementType: "input",
@@ -67,13 +68,13 @@ class ContactData extends React.Component {
           placeholder: "Zip Code"
         },
         value: "",
-        valid:false,
+        valid: false,
         validation: {
           required: true,
-          minLength:5,
-          maxLength:5
+          minLength: 5,
+          maxLength: 5
         },
-        touched:false
+        touched: false
       },
       deliveryMethod: {
         elementType: "select",
@@ -90,7 +91,7 @@ class ContactData extends React.Component {
         validation: {}
       }
     },
-    formIsValid:false,
+    formIsValid: false,
     loading: false
   };
   onSubmitHandler = event => {
@@ -108,7 +109,7 @@ class ContactData extends React.Component {
 
     axiosInstance
       .post(
-        "/orders.json/?auth=TGS3sr5gbBmZ2FzcBzqZnEOqdVXtYkUqRl1Kc04a",
+        "/orders.json",
         postData
       )
       .then(response => {
@@ -121,13 +122,16 @@ class ContactData extends React.Component {
     const updatedOrderForm = { ...this.state.orderForm };
     const updatedOrderElement = { ...updatedOrderForm[inputIdentifier] };
     updatedOrderElement.value = event.target.value;
-    updatedOrderElement.valid=this.checkValidation(updatedOrderElement.value,updatedOrderElement.validation);
-    updatedOrderElement.touched=true;
+    updatedOrderElement.valid = this.checkValidation(
+      updatedOrderElement.value,
+      updatedOrderElement.validation
+    );
+    updatedOrderElement.touched = true;
     updatedOrderForm[inputIdentifier] = updatedOrderElement;
 
-    let formIsValid=true;
-    for(let inputIdentifier in updatedOrderForm){
-      formIsValid=updatedOrderForm[inputIdentifier].valid && formIsValid;
+    let formIsValid = true;
+    for (let inputIdentifier in updatedOrderForm) {
+      formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
     }
 
     this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
@@ -137,10 +141,10 @@ class ContactData extends React.Component {
     if (rules.required) {
       isValid = value.trim() !== "" && isValid;
     }
-    if(rules.minLength){
+    if (rules.minLength) {
       isValid = value.trim().length >= rules.minLength && isValid;
     }
-    if(rules.maxLength){
+    if (rules.maxLength) {
       isValid = value.trim().length <= rules.maxLength && isValid;
     }
     return isValid;
@@ -166,7 +170,9 @@ class ContactData extends React.Component {
       <form onSubmit={this.onSubmitHandler}>
         <h4>Enter your contact data</h4>
         {formArray}
-        <Button btnType="Success" disabled={!this.state.formIsValid}>Order</Button>
+        <Button btnType="Success" disabled={!this.state.formIsValid}>
+          Order
+        </Button>
       </form>
     );
     if (this.state.loading) {
@@ -175,4 +181,11 @@ class ContactData extends React.Component {
     return <div className={classes.ContactData}>{form}</div>;
   }
 }
-export default ContactData;
+
+const mapStateToProps = state => {
+  return {
+    ingredients: state.ingredients,
+    totalPrice: state.totalPrice
+  };
+};
+export default connect(mapStateToProps)(ContactData);

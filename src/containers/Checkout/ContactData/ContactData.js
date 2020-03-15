@@ -119,6 +119,7 @@ class ContactData extends React.Component {
     //     this.props.history.push("/");
     //   })
     //   .catch(error => console.log(error));
+    event.preventDefault();
     const orderForm = {};
     for (let key in this.state.orderForm) {
       orderForm[key] = this.state.orderForm[key].value;
@@ -128,7 +129,7 @@ class ContactData extends React.Component {
       totalPrice: this.props.totalPrice,
       customer: orderForm
     };
-    this.props.orderBurger(postData);
+    this.props.orderBurger(postData,this.props.authToken);
   };
   onChangeHandler = (event, inputIdentifier) => {
     const updatedOrderForm = { ...this.state.orderForm };
@@ -198,13 +199,14 @@ const mapStateToProps = state => {
   return {
     ingredients: state.burgerBuilderReducer.ingredients,
     totalPrice: state.burgerBuilderReducer.totalPrice,
-    loading: state.orderReducer.loading
+    loading: state.orderReducer.loading,
+    authToken: state.authReducer.token
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    orderBurger: (orderData) => dispatch(orderActions.purchaseBurger(orderData))
+    orderBurger: (orderData,authToken) => dispatch(orderActions.purchaseBurger(orderData,authToken))
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData,axiosInstance));

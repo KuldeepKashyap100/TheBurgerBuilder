@@ -7,12 +7,14 @@ export const purchaseBurgerStart = () => {
   };
 };
 
-export const purchaseBurger = orderData => {
+export const purchaseBurger = (orderData,authToken) => {
   return dispatch => {
     dispatch(purchaseBurgerStart());
+    let url="/orders.json";
+    if(authToken) url+="/?auth="+authToken;
     axiosInstance
       .post(
-        "./orders.json" + "/?auth=TGS3sr5gbBmZ2FzcBzqZnEOqdVXtYkUqRl1Kc04a",
+        url,
         orderData
       )
       .then(response => {
@@ -65,11 +67,13 @@ export const fetchIngredientFailed = error => {
   };
 };
 
-export const fetchOrdersInit = () => {
+export const fetchOrdersInit = (authToken) => {
   return dispatch => {
     dispatch(fetchIngredientStart());
+    let url="/orders.json";
+    if(authToken) url+="/?auth="+authToken;
     axiosInstance
-      .get("/orders.json")
+      .get(url)
       .then(response => {
         const fetchedOrders = [];
         for (let key in response.data) {

@@ -15,7 +15,7 @@ const SideDrawer = props => {
         backDropVisibility={props.showSideDrawer}
         closePopup={props.toggleSideDrawerHandler}
       />
-      <div className={sideDrawerClasses.join(' ')}>
+      <div className={sideDrawerClasses.join(' ')} onClick={props.toggleSideDrawerHandler}>
         <div className={classes.Logo}>
           <Logo />
         </div>

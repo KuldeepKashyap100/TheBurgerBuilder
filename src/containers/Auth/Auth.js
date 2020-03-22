@@ -5,6 +5,7 @@ import classes from "./Auth.module.css";
 import { connect } from "react-redux";
 import * as actionCreater from "../../store/actions/index";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import {Redirect} from 'react-router-dom';
 
 class Auth extends React.Component {
   state = {
@@ -86,6 +87,8 @@ class Auth extends React.Component {
     this.props.onAuth(
       this.state.controls.email.value,
       this.state.controls.password.value,
+      // "TEST@TEST.com",
+      // "Kk27922004@",
       this.state.isSignUp
     );
   };
@@ -94,6 +97,11 @@ class Auth extends React.Component {
       return { isSignUp: !prevState.isSignUp };
     });
   };
+  componentDidMount(){
+    if(!this.props.building && this.props.authRedirectPath!='/'){
+      this.props.onSetAuthRedirectPath();
+    }
+  }
   render() {
     const authElementArray = [];
     for (let key in this.state.controls) {
@@ -116,7 +124,9 @@ class Auth extends React.Component {
         <div>
           <form>
             {authElementArray}
-            <Button btnType="Success" click={this.onSubmitHandler}>Log In</Button>
+            <Button btnType="Success" click={this.onSubmitHandler}>
+              Log In
+            </Button>
           </form>
           <Button btnType="Danger" click={this.switchAuthModeHandler}>
             Switch to {this.state.isSignUp ? "Sign In" : "Sign Up"}
@@ -127,8 +137,13 @@ class Auth extends React.Component {
     let error = null;
     if (this.props.error) error = <div>{this.props.error}</div>;
 
+    let redirectAfterAuthenication = null;
+    if (this.props.isAuthenticated)
+      redirectAfterAuthenication = <Redirect to={this.props.authRedirectPath}/>;
+
     return (
       <div className={classes.Auth}>
+        {redirectAfterAuthenication}
         {error}
         {form}
       </div>
@@ -138,13 +153,17 @@ class Auth extends React.Component {
 const mapStateToProps = state => {
   return {
     loading: state.authReducer.loading,
-    error: state.authReducer.error
+    error: state.authReducer.error,
+    isAuthenticated: state.authReducer.token !== null,
+    authRedirectPath: state.authReducer.authRedirectPath,
+    building: state.burgerBuilderReducer.building
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     onAuth: (email, password, isSignUp) =>
-      dispatch(actionCreater.auth(email, password, isSignUp))
+      dispatch(actionCreater.auth(email, password, isSignUp)),
+    onSetAuthRedirectPath: () => dispatch(actionCreater.setAuthRedirectPath('/'))
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

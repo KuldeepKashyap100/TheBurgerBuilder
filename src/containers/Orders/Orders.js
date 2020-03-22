@@ -22,7 +22,7 @@ class Orders extends React.Component {
     //     this.setState({ orders: fetchedOrders, loading: false });
     //   })
     //   .catch(err => this.setState({ loading: false }));
-    this.props.fetchOrdersInit(this.props.authToken);
+    this.props.fetchOrdersInit(this.props.authToken,this.props.userId);
   }
   render() {
     let orders = <Spinner />;
@@ -43,12 +43,13 @@ const mapStateToPorps = state => {
   return {
     orders: state.orderReducer.orders,
     loading: state.orderReducer.loading,
-    authToken: state.authReducer.token
+    authToken: state.authReducer.token,
+    userId: state.authReducer.userId
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    fetchOrdersInit: (token) => dispatch(orderReducer.fetchOrdersInit(token))
+    fetchOrdersInit: (token,userId) => dispatch(orderReducer.fetchOrdersInit(token,userId))
   };
 };
 export default connect(

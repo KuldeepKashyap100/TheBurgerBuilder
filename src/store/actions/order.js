@@ -67,11 +67,14 @@ export const fetchIngredientFailed = error => {
   };
 };
 
-export const fetchOrdersInit = (authToken) => {
+export const fetchOrdersInit = (authToken,userId) => {
   return dispatch => {
     dispatch(fetchIngredientStart());
     let url="/orders.json";
-    if(authToken) url+="/?auth="+authToken;
+    if(authToken) {
+      let queryParams = "/?auth="+authToken+'&orderBy="userId"&equalTo="'+userId+'"';
+      url+=queryParams;
+    }
     axiosInstance
       .get(url)
       .then(response => {
